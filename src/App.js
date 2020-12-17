@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import axios from 'axios';
-import SinglePhotos from './single-photos'
+import SinglePhotos from './single-photos';
+import Album from './album-photo';
 
 class App extends React.Component {
   
@@ -10,6 +11,7 @@ class App extends React.Component {
    this.state = {
     photos: {}
    }
+   this.handleAlbumClick = this.handleAlbumClick.bind(this);
  }
 
   componentDidMount(){
@@ -24,36 +26,36 @@ class App extends React.Component {
           photos: convertedValue
        });
        
-       for(var i=0; i<10; i++){
-        console.log(this.state.photos[i].id)
-        }
+      //  for(var i=0; i<10; i++){
+      //   console.log(this.state.photos[i].id)
+      //   }
       })
       
   }
+  handleSubmit(event){
+    event.preventDefault();
+    
+ }
  
   render(){
     
-    // for(var i=0; i<2; i++){
-    //   var x = this.state.photos[i];
-    //   console.log(x);
-    // }
-    
-    //console.log(x);
     try{
-      // let entries = Object.entries(this.state.photos);
-      // entries.forEach( ([prop, val]) => {
-           
-      // }
       var albums = [];
       var prevAlbumId = 1;
       var currentAlbumId = 1;
+      var isAlbumIdChanged = false;
+
       var size = this.state.photos.length;
-      for(var i=0; i<size; i++){
+      for(var i=1; i<size; i++){
         currentAlbumId = this.state.photos[i].albumId;
       if(prevAlbumId < currentAlbumId){
         prevAlbumId = currentAlbumId;
+        isAlbumIdChanged = true;
         }
-       if() 
+       if(isAlbumIdChanged && (i % 2 == 0)){
+         isAlbumIdChanged = false;
+        albums.push(<Album key={i} onClick={(e) => this.handleAlbumClick(currentAlbumId, e)} url={this.state.photos[i].url} albumId={this.state.photos[i].albumId} />)
+       } 
         
      }
       //console.log(this.state.photos[1].url)

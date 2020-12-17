@@ -1,12 +1,12 @@
 import React from 'react'
 
-function Album(props){
+function AlbumComponent(props){
    return(
-       <div className="single-photos">
+        <div className="single-photos">
             <img src={props.url} />
             <h4>Album {props.albumId}</h4>
-       </div>
+        </div>
    )
 }
 
-export default Album;
+export default AlbumComponent;

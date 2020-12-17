@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 import SinglePhotos from './single-photos';
-import Album from './album-photo';
+import Album from './album';
 
 class App extends React.Component {
   
@@ -11,7 +11,7 @@ class App extends React.Component {
    this.state = {
     photos: {}
    }
-   this.handleAlbumClick = this.handleAlbumClick.bind(this);
+   //this.handleAlbumClick = this.handleAlbumClick.bind(this);
  }
 
   componentDidMount(){
@@ -32,10 +32,7 @@ class App extends React.Component {
       })
       
   }
-  handleSubmit(event){
-    event.preventDefault();
-    
- }
+ 
  
   render(){
     
@@ -54,9 +51,9 @@ class App extends React.Component {
         }
        if(isAlbumIdChanged && (i % 2 == 0)){
          isAlbumIdChanged = false;
-        albums.push(<Album key={i} onClick={(e) => this.handleAlbumClick(currentAlbumId, e)} url={this.state.photos[i].url} albumId={this.state.photos[i].albumId} />)
+        albums.push(<Album key={i} data={this.state.photos}  url={this.state.photos[i].url} albumId={this.state.photos[i].albumId} />)
        } 
-        
+     
      }
       //console.log(this.state.photos[1].url)
     }catch(err){

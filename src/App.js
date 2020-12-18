@@ -40,7 +40,7 @@ class App extends React.Component {
   }
   
   albumChunk = [];
-  lastAlbumChunkIndex=0;
+  lastAlbumChunkIndex=10;
   isAlbumChunkEmpty = true;
   loadTarget = 10;
 
@@ -49,6 +49,7 @@ class App extends React.Component {
     console.log("album component clicked: " + id);
     var size = this.state.photos.length;
     var count = 0;
+    this.albumChunk = [];
     for(var i=0; i<size; i++){
         if(this.state.photos[i].albumId == id && count <= 50){
           this.albumChunk.push(this.state.photos[i]);
@@ -58,12 +59,12 @@ class App extends React.Component {
             break;
         }
     }
-     console.log(this.albumChunk)
+     //console.log(this.albumChunk)
        
-     for(var i=this.lastAlbumChunkIndex; i < this.loadTarget; i++){
-      this.albumPhotos.push(<SinglePhotos key={i+Math.floor(Date.now() / 1000)} url={this.state.photos[i].url} title={this.state.photos[i].title} id={this.state.photos[i].id} />)
+     for(var i=0; i < this.lastAlbumChunkIndex; i++){
+      this.albumPhotos.push(<SinglePhotos key={i+Math.floor(Date.now() / 1000)} url={this.albumChunk[i].url} title={this.albumChunk[i].title} id={this.albumChunk[i].id} />)
      }
-     this.lastAlbumChunkIndex = 10;
+     this.lastAlbumChunkIndex = this.lastAlbumChunkIndex + 10;
      
       this.setState({
        clicked: true
@@ -81,12 +82,12 @@ class App extends React.Component {
       return false;
     }
     for(var i=0; i < this.lastAlbumChunkIndex; i++){
-      this.albumPhotos.push(<SinglePhotos key={i+Math.floor(Date.now() / 1000)} url={this.state.photos[i].url} title={this.state.photos[i].title} id={this.state.photos[i].id} />)
+      this.albumPhotos.push(<SinglePhotos key={i+Math.floor(Date.now() / 1000)} url={this.albumChunk[i].url} title={this.albumChunk[i].title} id={this.albumChunk[i].id} />)
      }
      this.lastAlbumChunkIndex = this.lastAlbumChunkIndex + 10;
      console.log(this.albumPhotos);
      this.setState({
-      addMore: true
+      clicked: true
    });
   }
 
@@ -95,12 +96,12 @@ class App extends React.Component {
     
     try{
       var albums = [];
-      var prevAlbumId = 1;
-      var currentAlbumId = 1;
+      var prevAlbumId = 0;
+      var currentAlbumId = 0;
       var isAlbumIdChanged = false;
 
       var size = this.state.photos.length;
-      for(var i=1; i<size; i++){
+      for(var i=0; i<size; i++){
         currentAlbumId = this.state.photos[i].albumId;
       if(prevAlbumId < currentAlbumId){
         prevAlbumId = currentAlbumId;
@@ -108,8 +109,7 @@ class App extends React.Component {
         }
        if(isAlbumIdChanged && (i % 2 == 0)){
          isAlbumIdChanged = false;
-        
-        albums.push(<Album key={i + Math.floor(Date.now() / 1000)} onClick={(e) => {this.handleAlbumClick(e, currentAlbumId)}} data={this.state.photos}  url={this.state.photos[i].url} albumId={this.state.photos[i].albumId} />)
+        albums.push(<Album key={i + Math.floor(Date.now() / 1000)} onClick={(e, currentAlbumId) => {this.handleAlbumClick(e, currentAlbumId)}} data={this.state.photos}  url={this.state.photos[i].url} albumId={this.state.photos[i].albumId} />)
       
       } 
        
@@ -117,6 +117,7 @@ class App extends React.Component {
       //console.log(this.state.photos[1].url)
     }catch(err){
       console.log(err);
+      this.albumPhotos = [];
     }
    
     
@@ -139,31 +140,11 @@ class App extends React.Component {
         </div>
       );
     } 
-    else if (this.state.addMore == true){
-      console.log('clickedssss');
-      this.state.addMore = false;
-      return (
-        <div className="main-container">
-          <header>
-            <h3>Album</h3>
-            <a onClick={(e) => {this.handleBackButton(e)}}>Back</a>
-          </header>
-        
-          <div className="content-area"> 
-            <div className="album">
-              {this.albumPhotos}
-            </div>
-            <button onClick={(e) => {this.handleAddMore(e)}}>Add more</button>
-          </div>
-
-        </div>
-      );
-    }
     else{
       if(this.state.backButton){
         this.state.backButton = false;
-        //this.albumPhotos=[];
-        this.lastAlbumChunkIndex=0;
+        this.albumPhotos=[];
+        this.lastAlbumChunkIndex=10;
       }
       return (
         <div className="main-container">

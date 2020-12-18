@@ -1,11 +1,18 @@
 import React from 'react';
 import './App.css';
 import axios from 'axios';
+import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
 import SinglePhotos from './single-photos';
 import Album from './album';
 
 class App extends React.Component {
-  albumPhotos = [];
+
+ albumPhotos = [];
  constructor(){
    super();
    this.state = {
@@ -124,20 +131,30 @@ class App extends React.Component {
     if(this.state.clicked == true){
       this.state.clicked=false;
       return (
-        <div className="main-container">
-          <header>
+        <Container maxWidth="md">
+          <Typography variant="h4" component="h4" align="center">
             <h3>Album</h3>
-            <a onClick={(e) => {this.handleBackButton(e)}}>Back</a>
-          </header>
+            <Button variant="contained" color="secondary" onClick={(e) => {this.handleBackButton(e)}}>Back</Button>
+          </Typography>
+          <br/>
         
-          <div className="content-area"> 
-            <div className="album">
-              {this.albumPhotos}
-            </div>
-            <button onClick={(e) => {this.handleAddMore(e)}}>Add more</button>
-          </div>
+           <Grid 
+              container
+              direction="row"
+              justify="left"
+              alignItems="flex-start"
+            > 
+            {this.albumPhotos}
+            </Grid>
 
-        </div>
+            <div>
+                <br/>
+                <br/>
+                <Button variant="contained" color="primary" onClick={(e) => {this.handleAddMore(e)}}>Add more</Button>
+                <br/>
+                <br/>
+            </div>
+        </Container>
       );
     } 
     else{
@@ -147,18 +164,21 @@ class App extends React.Component {
         this.lastAlbumChunkIndex=10;
       }
       return (
-        <div className="main-container">
-          <header>
+        <Container maxWidth="md">
+          <Typography variant="h4" component="h4" align="center">
             <h3>Gallery</h3>
-          </header>
+          </Typography>
         
-          <div className="content-area"> 
-            <div className="album">
-              {albums}
-            </div>
+          <Grid 
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
 
-          </div>
-        </div>
+          > 
+              {albums}
+          </Grid>
+        </Container>
       );
     }
   }

@@ -37,15 +37,3 @@
   }
 }
 
-.single-photos{
-  width: 300px;
-  display: inline;
-  float: left;
-}
-.single-photos img{
-  width: 100px;
-  height: 100px;
-}
-.album{
-  display: inline;
-}
